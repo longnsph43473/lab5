@@ -1,488 +1,68 @@
-This is the PHP port of Hamcrest Matchers
-=========================================
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-[![Build Status](https://travis-ci.org/hamcrest/hamcrest-php.png?branch=master)](https://travis-ci.org/hamcrest/hamcrest-php)
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-Hamcrest is a matching library originally written for Java, but
-subsequently ported to many other languages.  hamcrest-php is the
-official PHP port of Hamcrest and essentially follows a literal
-translation of the original Java API for Hamcrest, with a few
-Exceptions, mostly down to PHP language barriers:
+## About Laravel
 
-  1. `instanceOf($theClass)` is actually `anInstanceOf($theClass)`
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-  2. `both(containsString('a'))->and(containsString('b'))`
-     is actually `both(containsString('a'))->andAlso(containsString('b'))`
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-  3. `either(containsString('a'))->or(containsString('b'))`
-     is actually `either(containsString('a'))->orElse(containsString('b'))`
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-  4. Unless it would be non-semantic for a matcher to do so, hamcrest-php
-     allows dynamic typing for it's input, in "the PHP way". Exception are
-     where semantics surrounding the type itself would suggest otherwise,
-     such as stringContains() and greaterThan().
+## Learning Laravel
 
-  5. Several official matchers have not been ported because they don't
-     make sense or don't apply in PHP:
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-       - `typeCompatibleWith($theClass)`
-       - `eventFrom($source)`
-       - `hasProperty($name)` **
-       - `samePropertyValuesAs($obj)` **
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-  6. When most of the collections matchers are finally ported, PHP-specific
-     aliases will probably be created due to a difference in naming
-     conventions between Java's Arrays, Collections, Sets and Maps compared
-     with PHP's Arrays.
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
----
-** [Unless we consider POPO's (Plain Old PHP Objects) akin to JavaBeans]
-     - The POPO thing is a joke.  Java devs coin the term POJO's (Plain Old
-       Java Objects).
+## Laravel Sponsors
 
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-Usage
------
+### Premium Partners
 
-Hamcrest matchers are easy to use as:
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
-```php
-Hamcrest_MatcherAssert::assertThat('a', Hamcrest_Matchers::equalToIgnoringCase('A'));
-```
+## Contributing
 
-Alternatively, you can use the global proxy-functions:
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-```php
-$result = true;
-// with an identifier
-assertThat("result should be true", $result, equalTo(true));
+## Code of Conduct
 
-// without an identifier
-assertThat($result, equalTo(true));
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-// evaluate a boolean expression
-assertThat($result === true);
+## Security Vulnerabilities
 
-// with syntactic sugar is()
-assertThat(true, is(true));
-```
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-:warning: **NOTE:** the global proxy-functions aren't autoloaded by default, so you will need to load them first:
+## License
 
-```php
-\Hamcrest\Util::registerGlobalFunctions();
-```
-
-For brevity, all of the examples below use the proxy-functions.
-
-
-Documentation
--------------
-A tutorial can be found on the [Hamcrest site](https://code.google.com/archive/p/hamcrest/wikis/TutorialPHP.wiki).
-
-
-Available Matchers
-------------------
-* [Array](../master/README.md#array)
-* [Collection](../master/README.md#collection)
-* [Object](../master/README.md#object)
-* [Numbers](../master/README.md#numbers)
-* [Type checking](../master/README.md#type-checking)
-* [XML](../master/README.md#xml)
-
-
-### Array
-
-* `anArray` - evaluates an array
-```php
-assertThat([], anArray());
-```
-
-* `hasItemInArray` - check if item exists in array
-```php
-$list = range(2, 7, 2);
-$item = 4;
-assertThat($list, hasItemInArray($item));
-```
-
-* `hasValue` - alias of hasItemInArray
-
-* `arrayContainingInAnyOrder` - check if array contains elements in any order
-```php
-assertThat([2, 4, 6], arrayContainingInAnyOrder([6, 4, 2]));
-assertThat([2, 4, 6], arrayContainingInAnyOrder([4, 2, 6]));
-```
-
-* `containsInAnyOrder` - alias of arrayContainingInAnyOrder
-
-* `arrayContaining` - An array with elements that match the given matchers in the same order.
-```php
-assertThat([2, 4, 6], arrayContaining([2, 4, 6]));
-assertthat([2, 4, 6], not(arrayContaining([6, 4, 2])));
-```
-
-* `contains` - check array in same order
-```php
-assertThat([2, 4, 6], contains([2, 4, 6]));
-```
-
-* `hasKeyInArray` - check if array has given key
-```php
-assertThat(['name'=> 'foobar'], hasKeyInArray('name'));
-```
-
-* `hasKey` - alias of hasKeyInArray
-
-* `hasKeyValuePair` - check if arary has given key, value pair
-```php
-assertThat(['name'=> 'foobar'], hasKeyValuePair('name', 'foobar'));
-```
-* `hasEntry` - same as hasKeyValuePair
-
-* `arrayWithSize` - check array has given size
-```php
-assertthat([2, 4, 6], arrayWithSize(3));
-```
-* `emptyArray` - check if array is emtpy
-```php
-assertThat([], emptyArray());
-```
-
-* `nonEmptyArray`
-```php
-assertThat([1], nonEmptyArray());
-```
-
-### Collection
-
-* `emptyTraversable` - check if traversable is empty
-```php
-$empty_it = new EmptyIterator;
-assertThat($empty_it, emptyTraversable());
-```
-
-* `nonEmptyTraversable` - check if traversable isn't empty
-```php
-$non_empty_it = new ArrayIterator(range(1, 10));
-assertThat($non_empty_it, nonEmptyTraversable());
-a
-```
-
-* `traversableWithSize`
-```php
-$non_empty_it = new ArrayIterator(range(1, 10));
-assertThat($non_empty_it, traversableWithSize(count(range(1, 10))));
-`
-```
-
-### Core
-
-* `allOf` - Evaluates to true only if ALL of the passed in matchers evaluate to true.
-```php
-assertThat([2,4,6], allOf(hasValue(2), arrayWithSize(3)));
-```
-
-* `anyOf` - Evaluates to true if ANY of the passed in matchers evaluate to true.
-```php
-assertThat([2, 4, 6], anyOf(hasValue(8), hasValue(2)));
-```
-
-* `noneOf` - Evaluates to false if ANY of the passed in matchers evaluate to true.
-```php
-assertThat([2, 4, 6], noneOf(hasValue(1), hasValue(3)));
-```
-
-* `both` + `andAlso` - This is useful for fluently combining matchers that must both pass.
-```php
-assertThat([2, 4, 6], both(hasValue(2))->andAlso(hasValue(4)));
-```
-
-* `either` + `orElse` - This is useful for fluently combining matchers where either may pass,
-```php
-assertThat([2, 4, 6], either(hasValue(2))->orElse(hasValue(4)));
-```
-
-* `describedAs` - Wraps an existing matcher and overrides the description when it fails.
-```php 
-$expected = "Dog";
-$found = null;
-// this assertion would result error message as Expected: is not null but: was null
-//assertThat("Expected {$expected}, got {$found}", $found, is(notNullValue()));
-// and this assertion would result error message as Expected: Dog but: was null
-//assertThat($found, describedAs($expected, notNullValue()));
-```
-
-* `everyItem` - A matcher to apply to every element in an array.
-```php
-assertThat([2, 4, 6], everyItem(notNullValue()));
-```
-
-* `hasItem` - check array has given item, it can take a matcher argument
-```php
-assertThat([2, 4, 6], hasItem(equalTo(2)));
-```
-
-* `hasItems` - check array has givem items, it can take multiple matcher as arguments
-```php
-assertThat([1, 3, 5], hasItems(equalTo(1), equalTo(3)));
-```
-
-### Object
-
-* `hasToString` - check `__toString` or `toString` method
-```php
-class Foo {
-    public $name = null;
-
-    public function __toString() {
-        return "[Foo]Instance";
-    }
-}
-$foo = new Foo;
-assertThat($foo, hasToString(equalTo("[Foo]Instance")));
-```
-
-* `equalTo` - compares two instances using comparison operator '=='
-```php
-$foo = new Foo;
-$foo2 = new Foo;
-assertThat($foo, equalTo($foo2));
-```
-
-* `identicalTo` - compares two instances using identity operator '==='
-```php
-assertThat($foo, is(not(identicalTo($foo2))));
-```
-
-* `anInstanceOf` - check instance is an instance|sub-class of given class
-```php
-assertThat($foo, anInstanceOf(Foo::class));
-```
-
-* `any` - alias of `anInstanceOf`
-
-* `nullValue` check null
-```php
-assertThat(null, is(nullValue()));
-```
-
-* `notNullValue` check not null
-```php
-assertThat("", notNullValue());
-```
-
-* `sameInstance` - check for same instance
-```php
-assertThat($foo, is(not(sameInstance($foo2))));
-assertThat($foo, is(sameInstance($foo)));
-```
-
-* `typeOf`- check type
-```php 
-assertThat(1, typeOf("integer"));
-```
-
-* `notSet` - check if instance property is not set
-```php
-assertThat($foo, notSet("name"));
-```
-
-* `set` - check if instance property is set
-```php
-$foo->name = "bar";
-assertThat($foo, set("name"));
-```
-
-### Numbers
-
-* `closeTo` - check value close to a range
-```php
-assertThat(3, closeTo(3, 0.5));
-```
-
-* `comparesEqualTo` - check with '=='
-```php
-assertThat(2, comparesEqualTo(2));
-```
-
-* `greaterThan` - check '>'
-```
-assertThat(2, greaterThan(1));
-```
-
-* `greaterThanOrEqualTo`
-```php
-assertThat(2, greaterThanOrEqualTo(2));
-```
-
-* `atLeast` - The value is >= given value
-```php
-assertThat(3, atLeast(2));
-```
-* `lessThan`
-```php
-assertThat(2, lessThan(3));
-```
-
-* `lessThanOrEqualTo`
-```php
-assertThat(2, lessThanOrEqualTo(3));
-```
-
-* `atMost` - The value is <= given value
-```php
-assertThat(2, atMost(3));
-```
-
-### String
-
-* `emptyString` - check for empty string
-```php
-assertThat("", emptyString());
-```
-
-* `isEmptyOrNullString`
-```php
-assertThat(null, isEmptyOrNullString());
-```
-
-* `nullOrEmptyString`
-```php
-assertThat("", nullOrEmptyString());
-```
-
-* `isNonEmptyString`
-```php
-assertThat("foo", isNonEmptyString());
-```
-
-* `nonEmptyString`
-```php
-assertThat("foo", nonEmptyString());
-```
-
-* `equalToIgnoringCase`
-```php
-assertThat("Foo", equalToIgnoringCase("foo"));
-```
-* `equalToIgnoringWhiteSpace`
-```php
-assertThat(" Foo ", equalToIgnoringWhiteSpace("Foo"));
-```
-
-* `matchesPattern` - matches with regex pattern
-```php
-assertThat("foobarbaz", matchesPattern('/(foo)(bar)(baz)/'));
-```
-
-* `containsString` - check for substring
-```php
-assertThat("foobar", containsString("foo"));
-```
-
-* `containsStringIgnoringCase`
-```php
-assertThat("fooBar", containsStringIgnoringCase("bar"));
-```
-
-* `stringContainsInOrder`
-```php
-assertThat("foo", stringContainsInOrder("foo"));
-```
-
-* `endsWith` - check string that ends with given value
-```php
-assertThat("foo", endsWith("oo"));
-```
-
-* `startsWith` - check string that starts with given value
-```php
-assertThat("bar", startsWith("ba"));
-```
-
-### Type-checking
-
-* `arrayValue` - check array type
-```php
-assertThat([], arrayValue());
-```
-
-* `booleanValue`
-```php
-assertThat(true, booleanValue());
-```
-* `boolValue` - alias of booleanValue
-
-* `callableValue` - check if value is callable
-```php
-$func = function () {};
-assertThat($func, callableValue());
-```
-* `doubleValue`
-```php
-assertThat(3.14, doubleValue());
-```
-
-* `floatValue`
-```php
-assertThat(3.14, floatValue());
-```
-
-* `integerValue`
-```php
-assertThat(1, integerValue());
-```
-
-* `intValue` - alias of `integerValue`
-
-* `numericValue` - check if value is numeric
-```php
-assertThat("123", numericValue());
-```
-
-* `objectValue` - check for object
-```php
-$obj = new stdClass;
-assertThat($obj, objectValue());
-```
-* `anObject`
-```php
-assertThat($obj, anObject());
-```
-
-* `resourceValue` - check resource type
-```php
-$fp = fopen("/tmp/foo", "w+");
-assertThat($fp, resourceValue());
-```
-
-* `scalarValue` - check for scaler value
-```php
-assertThat(1, scalarValue());
-```
-
-* `stringValue`
-```php
-assertThat("", stringValue());
-```
-
-### XML
-
-* `hasXPath` - check xml with a xpath
-```php
-$xml = <<<XML
-<books>
-  <book>
-    <isbn>1</isbn>   
-  </book>
-  <book>
-    <isbn>2</isbn>   
-  </book>
-</books>
-XML;
-
-$doc = new DOMDocument;
-$doc->loadXML($xml);
-assertThat($doc, hasXPath("book", 2));
-```
-
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+"# lab5" 
+"# lab5" 
